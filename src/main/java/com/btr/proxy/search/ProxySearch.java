@@ -59,7 +59,7 @@ public class ProxySearch implements ProxySearchStrategy {
 
         s.addStrategy(Strategy.JAVA);
         s.addStrategy(Strategy.ENV_VAR);
-        s.addStrategy(Strategy.WPAD);
+//        s.addStrategy(Strategy.WPAD);
         log.debug("Using default search priority: {}", s);
 
         return s;

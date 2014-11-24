@@ -1,9 +1,6 @@
 package net.pardini.proxy.autodetect;
 
 import com.btr.proxy.search.ProxySearch;
-import org.apache.http.HttpHost;
-import org.apache.http.client.HttpClient;
-import org.apache.http.conn.params.ConnRoutePNames;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,15 +53,6 @@ public class SmartProxyAutodetector implements ProxyAutodetector {
         }
 
         return null;
-    }
-
-    @Override
-    public void setProxyForHttpClient(final HttpClient client, final String url) {
-        ProxyInfo theProxy = this.detectProxyForURL(url);
-        if (theProxy != null) {
-            HttpHost proxy = new HttpHost(theProxy.getHost(), theProxy.getPort(), "http");
-            client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
-        }
     }
 
 // -------------------------- OTHER METHODS --------------------------

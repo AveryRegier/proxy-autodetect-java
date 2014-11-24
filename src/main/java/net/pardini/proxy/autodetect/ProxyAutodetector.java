@@ -1,7 +1,5 @@
 package net.pardini.proxy.autodetect;
 
-import org.apache.http.client.HttpClient;
-
 /**
  * Created with IntelliJ IDEA.
  * User: pardini
@@ -12,6 +10,5 @@ import org.apache.http.client.HttpClient;
 public interface ProxyAutodetector {
 
     public ProxyInfo detectProxyForURL(String url);
-    public void setProxyForHttpClient(HttpClient client, String url);
 
 }

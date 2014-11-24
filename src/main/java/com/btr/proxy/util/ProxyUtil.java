@@ -25,7 +25,9 @@ public class ProxyUtil {
     public static final int DEFAULT_PROXY_PORT = 80;
 
     private static List<Proxy> noProxyList;
+
     private static Pattern pattern = Pattern.compile("\\w*?:?/*([^:/]+):?(\\d*)/?");
+    private static Pattern authenticatedPattern = Pattern.compile("(\\S+?)://((\\S+?):(\\S+?)@(\\S+?)):?(\\d*)");
     private Logger log = LoggerFactory.getLogger(getClass());
 
 // -------------------------- STATIC METHODS --------------------------
@@ -44,17 +46,25 @@ public class ProxyUtil {
         }
         Matcher matcher = pattern.matcher(proxyVar);
         if (matcher.matches()) {
-            String host = matcher.group(1);
-            int port;
-            if (!"".equals(matcher.group(2))) {
-                port = Integer.parseInt(matcher.group(2));
-            } else {
-                port = DEFAULT_PROXY_PORT;
-            }
-            return new FixedProxySelector(host.trim(), port);
+            return getFixedProxySelector(matcher, 1, 2);
         } else {
+            matcher = authenticatedPattern.matcher(proxyVar);
+            if(matcher.matches()) {
+                return getFixedProxySelector(matcher, 2, 6);
+            }
             return null;
         }
+    }
+
+    private static FixedProxySelector getFixedProxySelector(Matcher matcher, int hostGroup, int portGroup) {
+        String host = matcher.group(hostGroup);
+        int port;
+        if (!"".equals(matcher.group(portGroup))) {
+            port = Integer.parseInt(matcher.group(portGroup));
+        } else {
+            port = DEFAULT_PROXY_PORT;
+        }
+        return new FixedProxySelector(host.trim(), port);
     }
 
     /**

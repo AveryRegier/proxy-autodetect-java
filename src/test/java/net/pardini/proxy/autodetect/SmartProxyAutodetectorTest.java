@@ -1,11 +1,9 @@
 package net.pardini.proxy.autodetect;
 
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.junit.Before;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +18,7 @@ public class SmartProxyAutodetectorTest {
     private ProxyAutodetector proxyAutodetector;
 
 
-    @BeforeMethod
+    @Before
     public void setUp() throws Exception {
         proxyAutodetector = new SmartProxyAutodetector();
     }
@@ -33,15 +31,4 @@ public class SmartProxyAutodetectorTest {
         log.info("Proxy for https url is {}", proxyHttps);
     }
 
-    @Test
-    public void testUsingHttpComponents() throws Exception {
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        String url = "https://www.google.com/";
-        proxyAutodetector.setProxyForHttpClient(httpClient, url);
-
-        HttpGet httpGet = new HttpGet(url);
-
-        org.apache.http.HttpResponse httpResponse = httpClient.execute(httpGet);
-        log.info("Got a response of {}", httpResponse.getStatusLine().toString());
-    }
 }

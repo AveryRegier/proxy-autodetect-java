@@ -1,8 +1,8 @@
 package com.btr.proxy.search;
 
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.Test;
 
 import java.net.Proxy;
 import java.net.ProxySelector;

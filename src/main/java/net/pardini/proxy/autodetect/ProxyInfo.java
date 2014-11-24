@@ -2,6 +2,8 @@ package net.pardini.proxy.autodetect;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,13 +17,25 @@ public class ProxyInfo {
     private Proxy proxy;
     private String host;
     private int port;
+    private String user;
+    private String password;
+
+    private static Pattern pattern = Pattern.compile("(\\S+?):(\\S+?)@(\\S+?)");
 
     public ProxyInfo(final Proxy proxy) {
         this.proxy = proxy;
         if (proxy.type() == Proxy.Type.HTTP) {
             InetSocketAddress addr = (InetSocketAddress) proxy.address();
             if (addr != null) {
-                this.host = addr.getHostName();
+                String hostName = addr.getHostName();
+                Matcher matcher = pattern.matcher(hostName);
+                if(matcher.matches()) {
+                    this.user = matcher.group(1);
+                    this.password = matcher.group(2);
+                    this.host = matcher.group(3);
+                } else {
+                    this.host = hostName;
+                }
                 this.port = addr.getPort();
             }
         }
@@ -37,6 +51,14 @@ public class ProxyInfo {
 
     public int getPort() {
         return port;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     @Override
